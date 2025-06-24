@@ -60,4 +60,44 @@ document.querySelectorAll('.about-content img').forEach(img => {
         img.addEventListener('click', removeZoom);
     });
 });
+document.addEventListener('DOMContentLoaded', function() {
+  const openBtn = document.getElementById('open-menu-modal');
+  const closeBtn = document.getElementById('close-menu-modal');
+  const modal = document.getElementById('menu-modal');
+  const menuForm = document.getElementById('menu-selection-form');
+
+  if (openBtn && closeBtn && modal) {
+    openBtn.addEventListener('click', () => {
+      modal.style.display = 'block';
+    });
+    closeBtn.addEventListener('click', () => {
+      modal.style.display = 'none';
+    });
+    window.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.style.display = 'none';
+      }
+    });
+  }
+
+  // Handle menu form submission
+  if (menuForm) {
+    menuForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const coffees = Array.from(menuForm.querySelectorAll('input[name="coffee"]:checked')).map(cb => cb.value);
+      const books = Array.from(menuForm.querySelectorAll('input[name="book"]:checked')).map(cb => cb.value);
+
+      let message = "You selected:\n";
+      message += coffees.length ? `Coffees: ${coffees.join(', ')}\n` : '';
+      message += books.length ? `Books: ${books.join(', ')}` : '';
+      if (!coffees.length && !books.length) {
+        message = "You didn't select any items.";
+      }
+
+      alert(message);
+      modal.style.display = 'none';
+      menuForm.reset();
+    });
+  }
+});
 
